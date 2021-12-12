@@ -93,6 +93,9 @@ class VideoPlayer : AppCompatActivity(), Player.EventListener {
         binding.progressBar.isVisible = true
         // var font = R.font.little_lord
         val retriever = MediaMetadataRetriever()
+
+        /*Get Video Form this Location
+        It is static currently but you can make it dyanmic*/
         retriever.setDataSource("/storage/emulated/0/Android/data/com.ffmpeg.testing/files/File/myVid.mp4")
         val width = 460
         Integer.valueOf(retriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_VIDEO_WIDTH))
@@ -116,6 +119,7 @@ class VideoPlayer : AppCompatActivity(), Player.EventListener {
         var random = (('a'..'z') + ('A'..'Z') + ('0'..'9')).random()
 
 
+        //Query to Insert Watermark
         val query =
             FFmpegQueryExtension().addTextOnVideo(
                 inputPath,
@@ -129,6 +133,7 @@ class VideoPlayer : AppCompatActivity(), Player.EventListener {
                 outputPath
             )
 
+        //CallBack of Query
         CallBackOfQuery().callQuery(this, query, object : FFmpegCallBack {
             override fun statisticsProcess(statistics: Statistics) {
                 Log.i("FFMPEG LOG : ", statistics.videoFrameNumber.toString())
@@ -158,6 +163,7 @@ class VideoPlayer : AppCompatActivity(), Player.EventListener {
 
     }
 
+    //To download Video in Local Storage
     fun downloadFile() {
         uniqueVideo = "textVid" + TimeUtils.getNowMills() + ".mp4"
         Toast.makeText(this, "Download started", Toast.LENGTH_LONG).show()
@@ -192,6 +198,7 @@ class VideoPlayer : AppCompatActivity(), Player.EventListener {
         releasePlayer()
     }
 
+    //To Initialize Exoplayer
     private fun initializePlayer() {
         simpleExoplayer = SimpleExoPlayer.Builder(this).build()
         val randomUrl = urlList.random()
@@ -234,6 +241,7 @@ class VideoPlayer : AppCompatActivity(), Player.EventListener {
             binding.progressBar.visibility = View.INVISIBLE
     }
 
+    //To share Video
     fun shareVideo() {
         val shareIntent = Intent(Intent.ACTION_SEND)
         shareIntent.type = "video/mp4"
